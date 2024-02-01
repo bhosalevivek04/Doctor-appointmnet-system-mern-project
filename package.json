@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
-  "author": "Vivek Bhosale ",
+  "author": "Vivek Bhosale",
   "license": "PREC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
