@@ -1,33 +1,33 @@
-const express = require("express");
-const colors = require("colors");
-const moragan = require("morgan");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
+// server.js
 
-//dotenv conig
-dotenv.config();
+const express = require('express');
+const connectDB = require('./config/database');
+const surveyRoutes = require('./routes/surveyRoutes');
+const mongoose = require('mongoose');
 
-//mongodb connection
-connectDB();
-
-//rest obejct
+// Initialize Express app
 const app = express();
 
-//middlewares
+// Suppress Mongoose deprecation warning
+mongoose.set('strictQuery', false);
+
+// Connect to MongoDB
+connectDB();
+
+// Middleware to parse JSON requests
 app.use(express.json());
-app.use(moragan("dev"));
 
-//routes
-app.use("/api/v1/user", require("./routes/userRoutes"));
-app.use("/api/v1/admin", require("./routes/adminRoutes"));
-app.use("/api/v1/doctor", require("./routes/doctorRoutes"));
+// Routes
+app.use('/survey', surveyRoutes);
 
-//port
-const port = process.env.PORT || 8080;
-//listen port
-app.listen(port, () => {
-  console.log(
-    `Server Running in ${process.env.NODE_MODE} Mode on port ${process.env.PORT}`
-      .bgCyan.white
-  );
+// Start the server
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Internal Server Error');
 });

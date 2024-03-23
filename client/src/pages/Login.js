@@ -1,6 +1,7 @@
-import React from "react";
-import "../styles/RegiserStyles.css";
-import { Form, Input, message } from "antd";
+//Login.js
+import React, { useState } from "react";
+import "../styles/LoginStyles.css";
+import { Form, Input, Button, message, Spin } from "antd";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,47 +10,55 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //form handler
-  const onfinishHandler = async (values) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (values) => {
     try {
       dispatch(showLoading());
+      setLoading(true);
+
       const res = await axios.post("/api/v1/user/login", values);
-      window.location.reload();
-      dispatch(hideLoading());
+
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
-        message.success("Login Successfully");
+        message.success("Login Successful");
         navigate("/");
       } else {
         message.error(res.data.message);
       }
     } catch (error) {
+      console.error("Login Error:", error);
+      message.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
       dispatch(hideLoading());
-      console.log(error);
-      message.error("something went wrong");
     }
   };
-  return (
-    <div className="form-container ">
-      <Form
-        layout="vertical"
-        onFinish={onfinishHandler}
-        className="register-form"
-      >
-        <h3 className="text-center">Login From</h3>
 
-        <Form.Item label="Email" name="email">
-          <Input type="email" required />
+  return (
+    <div className="form-container">
+      <Form layout="vertical" onFinish={handleLogin} className="login-form">
+        <h3 className="text-center">Login Form</h3>
+
+        <Form.Item label="Email" name="email" required>
+          <Input type="email" />
         </Form.Item>
-        <Form.Item label="Password" name="password">
-          <Input type="password" required />
+        <Form.Item label="Password" name="password" required>
+          <Input type="password" />
         </Form.Item>
-        <Link to="/register" className="m-2">
-          Not a user Register here
+
+        <Link to="/register" className="register-link">
+          Not registered? Register here.
         </Link>
-        <button className="btn btn-primary" type="submit">
-          Login
-        </button>
+
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="login-button"
+          loading={loading}
+        >
+          {loading ? <Spin /> : "Login"}
+        </Button>
       </Form>
     </div>
   );

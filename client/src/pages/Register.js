@@ -1,3 +1,4 @@
+//Register.js
 import React from "react";
 import "../styles/RegiserStyles.css";
 import { Form, Input, message } from "antd";
@@ -48,7 +49,7 @@ const Register = () => {
             Already user login here
           </Link>
           <button className="btn btn-primary" type="submit">
-            Register
+            Next
           </button>
         </Form>
       </div>

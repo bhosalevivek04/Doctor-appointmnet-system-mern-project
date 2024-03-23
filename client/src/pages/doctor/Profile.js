@@ -44,12 +44,12 @@ const Profile = () => {
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Somthing Went Wrrong ");
+      message.error("Somthing Went Wrong ");
     }
   };
   // update doc ==========
 
-  //getDOc Details
+  //getDoc Details
   const getDoctorInfo = async () => {
     try {
       const res = await axios.post(

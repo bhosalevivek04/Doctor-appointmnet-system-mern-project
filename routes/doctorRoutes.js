@@ -1,31 +1,11 @@
-const express = require("express");
-const {
-  getDoctorInfoController,
-  updateProfileController,
-  getDoctorByIdController,
-  doctorAppointmentsController,
-  updateStatusController,
-} = require("../controllers/doctorCtrl");
-const authMiddleware = require("../middlewares/authMiddleware");
+const express = require('express');
 const router = express.Router();
+const DoctorController = require('../controllers/DoctorController');
 
-//POST SINGLE DOC INFO
-router.post("/getDoctorInfo", authMiddleware, getDoctorInfoController);
-
-//POST UPDATE PROFILE
-router.post("/updateProfile", authMiddleware, updateProfileController);
-
-//POST  GET SINGLE DOC INFO
-router.post("/getDoctorById", authMiddleware, getDoctorByIdController);
-
-//GET Appointments
-router.get(
-  "/doctor-appointments",
-  authMiddleware,
-  doctorAppointmentsController
-);
-
-//POST Update Status
-router.post("/update-status", authMiddleware, updateStatusController);
+// Routes for doctors
+router.get('/', DoctorController.getAllDoctors);
+router.post('/', DoctorController.createDoctor);
+router.put('/:id', DoctorController.updateDoctor);
+router.delete('/:id', DoctorController.deleteDoctor);
 
 module.exports = router;

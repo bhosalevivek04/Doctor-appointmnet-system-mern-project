@@ -6,7 +6,7 @@ const getDoctorInfoController = async (req, res) => {
     const doctor = await doctorModel.findOne({ userId: req.body.userId });
     res.status(200).send({
       success: true,
-      message: "doctor data fetch success",
+      message: "Doctor data fetch success",
       data: doctor,
     });
   } catch (error) {
